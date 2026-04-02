@@ -1,3 +1,5 @@
+`Gno.land` · `Smart Contracts` · `Infrastructure`
+
 # timelock_guardian
 
 On-chain timelock for critical contract operations on Gno.land.
@@ -139,5 +141,20 @@ gnokey query vm/qeval --data 'gno.land/r/timelock_guardian.GetAction("action_1")
 ```
 
 Visit `/r/timelock_guardian` on any Gno.land node to see all pending, executed, and cancelled actions.
+
+## Stack
+
+- [Gno](https://gno.land) — Go-like smart contract language
+- [Gno.land](https://gno.land) — Layer 1 blockchain
+
+## Part of the Gno Infrastructure Stack
+
+| Realm | Layer |
+|-------|-------|
+| [fee_split](https://github.com/SillyZir/fee-split) | Revenue & value flow |
+| [permission_registry](https://github.com/SillyZir/permission_registry) | Access control |
+| [service_registry](https://github.com/SillyZir/service_registry) | Discovery |
+| [upgrade_registry](https://github.com/SillyZir/upgrade_registry) | Upgrade tracking |
+| **timelock_guardian** | **Security** |
 
 ---
