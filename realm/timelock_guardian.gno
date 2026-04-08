@@ -21,12 +21,14 @@ type Action struct {
 }
 
 var (
-	actions map[string]*Action
-	nextID  int
+	actions   map[string]*Action
+	actionIDs []string // insertion-ordered for deterministic iteration
+	nextID    int
 )
 
 func init() {
 	actions = make(map[string]*Action)
+	actionIDs = []string{}
 	nextID = 1
 }
 
@@ -68,6 +70,7 @@ func Schedule(_ realm, target, data string, delay int64) string {
 		Executed:     false,
 		Cancelled:    false,
 	}
+	actionIDs = append(actionIDs, id)
 	return id
 }
 
@@ -122,7 +125,8 @@ func GetAction(actionID string) string {
 // actions.
 func GetPending() string {
 	var results []string
-	for _, a := range actions {
+	for _, id := range actionIDs {
+		a := actions[id]
 		if a == nil || a.Executed || a.Cancelled {
 			continue
 		}
@@ -156,7 +160,8 @@ func Render(path string) string {
 	var executed []*Action
 	var cancelled []*Action
 
-	for _, a := range actions {
+	for _, id := range actionIDs {
+		a := actions[id]
 		if a == nil {
 			continue
 		}
